@@ -2,7 +2,7 @@
 
 # $1 - hdfs namenode hostname
 
-cat > ~/hadoop/etc/hadoop/core-site.xml << END
+cat > ~/opt/hadoop/etc/hadoop/core-site.xml << END
 <configuration>
     <property>
         <name>fs.defaultFS</name>

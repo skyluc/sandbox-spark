@@ -20,7 +20,7 @@ HDFS_URI="hdfs://${PRIVATE_IP}:9000"
 
 SPARK_DIST="spark-1.2.0-bin-hadoop2.4.tgz"
 
-DFS_CMD="${HOME}/hadoop/bin/hdfs dfs"
+DFS_CMD="${HOME}/opt/hadoop/bin/hdfs dfs"
 
 echo "remove previous version of the spark distribution (if any) from hdfs"
 

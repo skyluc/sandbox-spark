@@ -14,4 +14,4 @@ while getopts "h" opt; do
     esac
 done
 
-~/hadoop/sbin/hadoop-daemon.sh --config ~/hadoop/etc/hadoop --script hdfs stop namenode
+~/opt/hadoop/sbin/hadoop-daemon.sh --config ~/hadoop/etc/hadoop --script hdfs stop namenode

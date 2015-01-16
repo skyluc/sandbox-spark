@@ -14,7 +14,7 @@ while getopts "h" opt; do
     esac
 done
 
-~/mesos/bin/mesos-master.sh --ip=0.0.0.0 --work_dir=/var/lib/mesos > /tmp/mesos-master.log 2>&1 &
+~/opt/mesos/bin/mesos-master.sh --ip=0.0.0.0 --work_dir=/var/lib/mesos > /tmp/mesos-master.log 2>&1 &
 
 PRIVATE_IP=$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4)
 PUBLIC_IP=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4)

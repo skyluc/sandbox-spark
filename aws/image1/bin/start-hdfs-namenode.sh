@@ -19,7 +19,7 @@ PUBLIC_IP=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4)
 
 ~/bin/utils/create-hdfs-config.sh ${PRIVATE_IP}
 
-~/hadoop/sbin/hadoop-daemon.sh --config ~/hadoop/etc/hadoop --script hdfs start namenode
+~/opt/hadoop/sbin/hadoop-daemon.sh --config ~/hadoop/etc/hadoop --script hdfs start namenode
 
 echo "HDFS namenode started at : ${PRIVATE_IP}"
 echo "namenode hostname for HDFS namenodes: ${PRIVATE_IP}"

@@ -24,6 +24,6 @@ rm -rf /tmp/hadoop-ubuntu/dfs/name
 
 echo "logs at: /tmp/hdfs-format.log"
 
-~/hadoop/bin/hdfs namenode -format > /tmp/hdfs-format.log 2>&1
+~/opt/hadoop/bin/hdfs namenode -format > /tmp/hdfs-format.log 2>&1
 
 echo "HDFS namenode initialized"

@@ -25,7 +25,7 @@ then
   exit 1
 fi
 
-~/mesos/bin/mesos-slave.sh --master=${MESOS_MASTER_IP}:5050 > /tmp/mesos-slave.log 2>&1 &
+~/opt/mesos/bin/mesos-slave.sh --master=${MESOS_MASTER_IP}:5050 > /tmp/mesos-slave.log 2>&1 &
 
 PUBLIC_IP=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4)
 
