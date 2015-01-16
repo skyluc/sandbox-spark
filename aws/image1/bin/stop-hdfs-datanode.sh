@@ -14,5 +14,5 @@ while getopts "h" opt; do
     esac
 done
 
-~/opt/hadoop/sbin/hadoop-daemon.sh --config ~/hadoop/etc/hadoop --script hdfs stop datanode
+~/opt/hadoop/sbin/hadoop-daemon.sh --config ~/opt/hadoop/etc/hadoop --script hdfs stop datanode
 

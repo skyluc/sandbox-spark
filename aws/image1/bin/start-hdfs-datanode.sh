@@ -27,7 +27,7 @@ fi
 
 ~/bin/utils/create-hdfs-config.sh ${HDFS_NAMENODE_IP}
 
-~/opt/hadoop/sbin/hadoop-daemon.sh --config ~/hadoop/etc/hadoop --script hdfs start datanode
+~/opt/hadoop/sbin/hadoop-daemon.sh --config ~/opt/hadoop/etc/hadoop --script hdfs start datanode
 
 PUBLIC_IP=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4)
 
