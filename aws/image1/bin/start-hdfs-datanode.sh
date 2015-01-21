@@ -1,5 +1,11 @@
 #!/bin/bash -e
 
+# loads environment if directly invoked by ssh
+if [ -z "${SSH_TTY}" ]
+then
+  . ~/bin/ssh_env.sh
+fi
+
 function show_help() {
   echo "Usage: start-hdfs-datanode.sh [-h] <hdfs-namenode-ip>"
   echo "  -h: this help"

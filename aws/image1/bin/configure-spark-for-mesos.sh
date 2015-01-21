@@ -1,5 +1,12 @@
 #!/bin/bash -e
 
+# loads environment if directly invoked by ssh
+if [ -z "${SSH_TTY}" ]
+then
+  . ~/bin/ssh_env.sh
+fi
+
+
 function show_help() {
   echo "Usage: configure-spark-for-mesos.sh [-h]"
   echo "  -h: this help"
