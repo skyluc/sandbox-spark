@@ -1,0 +1,6 @@
+- name: update the install packages
+  apt:
+    update_cache: yes
+    upgrade: "yes"
+  sudo: yes
+

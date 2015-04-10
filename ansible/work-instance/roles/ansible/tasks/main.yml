@@ -1,0 +1,25 @@
+- name: fetch ansible git repo
+  git:
+    repo: "git@github.com:ansible/ansible"
+    dest: "{{ ansible_env.HOME }}/dev/ansible/ansible"
+    recursive: yes
+    version: f61de1
+
+- name: install ansible dependencies
+  apt:
+    name: "{{ item }}"
+    state: present
+  sudo: yes
+  with_items:
+    - "python-setuptools"
+    - "autoconf"
+    - "g++"
+    - "python2.7-dev"
+
+- name: install pip (easy_install)
+  command: "easy_install pip"
+  sudo: yes
+
+- name: install mone ansible dependencies (pip)
+  command: "pip install paramiko PyYAML Jinja2 httplib2 boto"
+  sudo: yes

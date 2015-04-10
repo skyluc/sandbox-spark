@@ -1,0 +1,5 @@
+---
+
+tinc_network_name: typesafe-spark
+tinc_node_id: "{{ cluster_node_id }}"
+tinc_gateway_username: "bourlier"

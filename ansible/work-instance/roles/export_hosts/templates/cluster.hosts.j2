@@ -1,0 +1,18 @@
+[local]
+127.0.0.1 ansible_connection=local
+
+{% for group in groups %}
+{%   if group != "ungrouped" and group != "all" and group != "local" %}
+[{{ group }}]
+{%     for host in groups[group] %}
+{{ hostvars[host]['cluster_vpn_ip'] }} 
+{%-       for v in hostvars[host] %}
+{%-         if v != "inventory_hostname" and v != "group_names" and v != "inventory_hostname_short" %}
+ {{ v }}={{ hostvars[host][v] }}
+{%-         endif %}
+{%-       endfor %}
+
+{%      endfor %}
+
+{%   endif %}
+{% endfor %}

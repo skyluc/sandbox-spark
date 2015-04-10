@@ -1,0 +1,54 @@
+# |default(None) == None means not defined or empty. If it is not defined, the default value (None) is returned.
+# If it is empty, the value is None.
+
+- name: check EC2_KEYPAIR_NAME var
+  fail:
+    msg: "Please provide the name of the ec2 keypair to use, in EC2_KEYPAIR_NAME"
+  when: EC2_KEYPAIR_NAME|default(None) == None
+        
+- name: check EC2_KEYPAIR_FILE var
+  fail:
+    msg: "Please provide the location of the ec2 private key to use, in EC2_KEYPAIR_FILE"
+  when: EC2_KEYPAIR_FILE|default(None) == None
+
+- name: get EC2_KEYPAIR_FILE file status
+  stat:
+    path: "{{ EC2_KEYPAIR_FILE }}"
+    follow: True
+  register: keyFile
+
+- name: check EC2_KEYPAIR_FILE is a file
+  fail:
+    msg: "'{{ EC2_KEYPAIR_FILE }}' doesn't exist, or is not a file"
+  when: (not keyFile.stat.exists) or keyFile.stat.isdir
+
+- name: check EC2_KEYPAIR_FILE permissions
+  fail:
+    msg: "File permission for '{{ EC2_KEYPAIR_FILE }}' are incorrect. The file should only be accessible by 'user'. Expected mode: 0600"
+  when: keyFile.stat.mode != "0600"
+
+- name: check WORK_INSTANCE_ID var
+  fail: 
+    msg: "Please provide an id for the work instance, in WORK_INSTANCE_ID"
+  when: WORK_INSTANCE_ID|default(None) == None
+
+- name: check WORK_INSTANCE_ID var
+  fail:
+    msg: "Please provide a valid value for the work instance '{{ WORK_INSTANCE_ID }}', in WORK_INSTANCE_ID. It should be between 0 and 9"
+  when: (WORK_INSTANCE_ID|int < 0) or (WORK_INSTANCE_ID|int > 9)
+
+- name: check AWS credentials, access key id
+  fail: 
+    msg: "Please provide your AWS access key id, in the AWS_ACCESS_KEY_ID environment variable"
+  when: lookup('env', 'AWS_ACCESS_KEY_ID') == ''
+    
+- name: check AWS credentials, secret access key
+  fail:
+    msg: "Please provide your AWS secret access key, in the AWS_SECRET_ACCESS_KEY environment variable"
+  when: lookup('env', 'AWS_SECRET_ACCESS_KEY') == ''
+
+- name: check disabled host key checking
+  fail:
+    msg: "Please disable host key checking, for a full non-interactive experience. Execute 'export ANSIBLE_HOST_KEY_CHECKING=False' on the command line"
+  when: lookup('env', 'ANSIBLE_HOST_KEY_CHECKING') != 'False'
+

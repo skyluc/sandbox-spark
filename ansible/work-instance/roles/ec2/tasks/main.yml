@@ -1,0 +1,71 @@
+- name: create and configure the security group
+  ec2_group:
+    name: "{{ ec2_security_group }}"
+    description: "security group for lucs work intances"
+    region: "{{ EC2_REGION }}"
+    state: present
+    rules:
+      # open between machines of the security group
+      - proto: tcp
+        from_port: 0
+        to_port: 65335
+        group_name: "{{ ec2_security_group }}"
+      # open between machines of the tinc network
+      - proto: tcp
+        from_port: 0
+        to_port: 65335
+        cidr_ip: 10.1.0.0/16
+      # ssh from anywhere
+      # this could be removed when the tinc network is established
+      - proto: tcp
+        from_port: 22
+        to_port: 22
+        cidr_ip: 0.0.0.0/0
+      # tinc from anywhere
+      - proto: tcp
+        from_port: 655
+        to_port: 655
+        cidr_ip: 0.0.0.0/0
+      - proto: udp
+        from_port: 655
+        to_port: 655
+        cidr_ip: 0.0.0.0/0
+
+- name: launch the spot instance
+  ec2:
+    region: "{{ EC2_REGION }}"
+    instance_type: "{{ ec2_instance_type }}"
+    image: "{{ ec2_image }}"
+    keypair: "{{ EC2_KEYPAIR_NAME }}" 
+    group: "{{ ec2_security_group }}"
+    wait: yes
+    count: 1
+    spot_price: "{{ ec2_spot_price }}"
+  register: ec2
+
+- name: wait for ssh to be up
+  wait_for:
+    host: "{{ item.public_ip }}"
+    port: 22
+  with_items: ec2.instances
+
+- name: adds the instance to the inventory
+  add_host:
+    name: "{{ ec2.instances[0].public_ip }}"
+    groups: "work_instance"
+    cluster_vpn_ip: "10.1.2.11{{ WORK_INSTANCE_ID }}"
+    cluster_node_id: "luc_work_instance{{ WORK_INSTANCE_ID }}"
+    ansible_ssh_private_key_file: "{{ EC2_KEYPAIR_FILE }}"
+    ansible_ssh_user: "{{ ec2_remote_user }}"
+
+- name: tag the instance in ec2
+  ec2_tag:
+    resource: "{{ ec2.instances[0].id }}"
+    region: "{{ EC2_REGION }}"
+    state: present
+    tags:
+      Name: "luc_work_instance{{ WORK_INSTANCE_ID }}"
+      cluster: "luc_work_instances"
+      node_id: "luc_work_instance{{ WORK_INSTANCE_ID }}"
+      vpn_ip: "10.1.2.11{{ WORK_INSTANCE_ID }}"
+

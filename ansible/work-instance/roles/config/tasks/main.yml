@@ -1,0 +1,36 @@
+- name: fetch conf git repo
+  git:
+    repo: "git@github.com:skyluc/config"
+    dest: "{{ ansible_env.HOME }}/dev/skyluc/config"
+    version: master
+
+- name: .bash_aliases
+  file:
+    state: link
+    dest: "{{ ansible_env.HOME }}/.bash_aliases"
+    src: "{{ ansible_env.HOME }}/dev/skyluc/config/apps/bash/.bash_aliases"
+
+- name: .gitconfig
+  file:
+    state: link
+    dest: "{{ ansible_env.HOME }}/.gitconfig"
+    src: "{{ ansible_env.HOME }}/dev/skyluc/config/apps/git/.gitconfig"
+
+- name: .git
+  file:
+    state: link
+    dest: "{{ ansible_env.HOME }}/.git"
+    src: "{{ ansible_env.HOME }}/dev/skyluc/config/apps/git/.git_folder"
+
+- name: .vimrc
+  file:
+    state: link
+    dest: "{{ ansible_env.HOME }}/.vimrc"
+    src: "{{ ansible_env.HOME }}/dev/skyluc/config/apps/vim/.vimrc"
+
+- name: .vim
+  file:
+    state: link
+    dest: "{{ ansible_env.HOME }}/.vim"
+    src: "{{ ansible_env.HOME }}/dev/skyluc/config/apps/vim/.vim"
+

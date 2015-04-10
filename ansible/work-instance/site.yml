@@ -1,0 +1,16 @@
+---
+
+- hosts: local
+  roles:
+    - var_check
+    - ec2
+    - export_hosts
+
+- hosts: work_instance
+  roles:
+    - update_ubuntu
+    - tinc
+    - transfer_keys
+    - git
+    - config
+    - ansible

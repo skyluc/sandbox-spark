@@ -1,0 +1,8 @@
+- debug:
+    msg: "{{ hostvars }}"
+
+- name: export the current hosts configuration to the filesystem
+  template:
+    src: cluster.hosts.j2
+    dest: ./cluster.hosts
+  

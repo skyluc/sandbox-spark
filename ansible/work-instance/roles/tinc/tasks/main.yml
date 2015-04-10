@@ -1,0 +1,89 @@
+- name: gather ec2 facts
+  ec2_facts:
+
+- name: install tinc
+  apt:
+    name: tinc
+    state: present
+  sudo: yes
+
+- name: tinc - sub-network directory
+  file:
+    dest: "/etc/tinc/{{ tinc_network_name }}/hosts"
+    state: directory
+  sudo: yes
+
+- name: tinc - up script
+  template:
+    src: tinc-up.j2
+    dest: "/etc/tinc/{{ tinc_network_name }}/tinc-up"
+    mode: 0744
+  sudo: yes
+
+- name: tinc - down script
+  template:
+    src: tinc-down.j2
+    dest: "/etc/tinc/{{ tinc_network_name }}/tinc-down"
+    mode: 0744
+  sudo: yes
+
+- name: tinc - host config file
+  template:
+    src: tinc.conf.j2
+    dest: "/etc/tinc/{{ tinc_network_name }}/tinc.conf"
+  sudo: yes
+
+- name: tinc - node description in hosts folder
+  template:
+    src: hosts/node_name.j2
+    dest: "/etc/tinc/{{ tinc_network_name }}/hosts/{{ tinc_node_id }}"
+  sudo: yes
+
+- name: tinc - generate key pair
+  command: "/usr/sbin/tincd -n {{ tinc_network_name }} -K4096"
+  sudo: yes
+
+- name: tinc - transfer the node hosts config
+  fetch:
+    src: "/etc/tinc/{{ tinc_network_name }}/hosts/{{ tinc_node_id }}"
+    dest: "/tmp/tinc-conf/hosts/"
+    flat: yes
+
+- name: tinc - send the node hosts config to the gateway
+  command: scp "/tmp/tinc-conf/hosts/{{ tinc_node_id }}" "{{ tinc_gateway_username }}@10.1.0.1:/etc/tinc/{{ tinc_network_name }}/hosts/"
+  delegate_to: 127.0.0.1
+
+- name: tinc - transfer the gateway hosts config
+  command: scp "{{ tinc_gateway_username }}@10.1.0.1:/etc/tinc/{{ tinc_network_name }}/hosts/gateway" "/tmp/tinc-conf/hosts/"
+  run_once: true
+  delegate_to: 127.0.0.1
+
+- name: tinc - copy the gateway hosts config
+  copy:
+    src: "/tmp/tinc-conf/hosts/gateway"
+    dest: "/etc/tinc/{{ tinc_network_name }}/hosts/"
+  sudo: yes
+
+- name: tinc - configure the network name for the daemon
+  lineinfile:
+    dest: "/etc/tinc/nets.boot"
+    line: "{{ tinc_network_name }}"
+  sudo: yes
+
+- name: tinc - add logging to the daemon
+  lineinfile:
+    dest: "/etc/init.d/tinc"
+    line: "EXTRA=${EXTRA:---logfile}"
+    insertafter: "^DAEMON="
+  sudo: yes
+
+- name: tinc - start daemon
+  command: "/etc/init.d/tinc restart"
+  sudo: yes
+
+- name: tinc - check vpn is up (gateway is accessible)
+  wait_for:
+    host: 10.1.0.1
+    port: 22
+    timeout: 5
+

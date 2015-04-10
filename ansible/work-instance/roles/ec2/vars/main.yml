@@ -1,0 +1,11 @@
+---
+
+EC2_REGION: "us-east-1"
+# us-east-1
+ec2_image: "ami-9a562df2"
+# eu-central-1
+#ec2_image: "ami-9a380b87"
+ec2_remote_user: "ubuntu"
+ec2_instance_type: "m3.large"
+ec2_spot_price: "0.017"
+ec2_security_group: "luc-work-instances"
