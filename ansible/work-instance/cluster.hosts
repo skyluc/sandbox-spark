@@ -1,6 +1,0 @@
-[local]
-127.0.0.1 ansible_connection=local
-
-[work_instance]
-10.1.2.110 ansible_ssh_private_key_file=/home/luc/.ssh/aws/luc-us-e-1.pem cluster_vpn_ip=10.1.2.110 local_home=/home/luc cluster_node_id=luc_work_instance0 ansible_ssh_user=ubuntu
-
