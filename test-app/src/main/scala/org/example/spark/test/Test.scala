@@ -14,7 +14,7 @@ object Test {
                      .setAppName(appName)
                      .setMaster(master)
                      .set("spark.mesos.executor.home", "bahh") // just has to be set ...
-                     .set("spark.executor.uri", "http://s3.amazonaws.com/spark-test-luc/releases/spark-1.3.0-typesafe-001-bin-2.4.0.tgz")
+                     .set("spark.executor.uri", "http://s3.amazonaws.com/spark-test-luc/releases/spark-1.3.1-typesafe-001-bin-2.4.0.tgz")
     val sc = new SparkContext(conf)
 
     val rdd = sc.makeRDD(2 to 5)
