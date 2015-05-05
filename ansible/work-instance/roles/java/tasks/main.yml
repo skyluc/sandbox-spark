@@ -1,0 +1,10 @@
+- name: install java
+  apt:
+    name: openjdk-7-jdk
+    state: present
+  sudo: yes
+
+- name: set JAVA_HOME
+  lineinfile:
+    dest: .bashrc
+    line: 'export JAVA_HOME="/usr/lib/jvm/java-7-openjdk-amd64"'
