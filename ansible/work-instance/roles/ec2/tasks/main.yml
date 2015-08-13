@@ -1,8 +1,28 @@
+- name: create or update the spark VPC
+  ec2_vpc:
+    cidr_block: "10.10.0.0/16"
+    resource_tags: { "Name":"Spark-VPC" }
+    region: "{{ EC2_REGION }}"
+    state: present
+    subnets:
+      - cidr: "10.10.1.0/24"
+        az: "{{ EC2_AZ_REGION }}"
+        resource_tags: { "Name":"Spark-VPC {{ EC2_AZ_REGION }}" }
+    internet_gateway: True
+    route_tables:
+      - subnets:
+          - "10.10.1.0/24"
+        routes:
+          - dest: 0.0.0.0/0
+            gw: igw
+  register: vpc
+
 - name: create and configure the security group
   ec2_group:
     name: "{{ ec2_security_group }}"
     description: "security group for lucs work intances"
     region: "{{ EC2_REGION }}"
+    vpc_id: "{{ vpc.vpc_id }}"
     state: present
     rules:
       # open between machines of the security group
@@ -34,7 +54,9 @@
 - name: launch the spot instance
   ec2:
     region: "{{ EC2_REGION }}"
+    vpc_subnet_id: "{{ vpc.subnets[0].id }}"
     instance_type: "{{ ec2_instance_type }}"
+    assign_public_ip: yes
     image: "{{ ec2_image }}"
     keypair: "{{ EC2_KEYPAIR_NAME }}" 
     group: "{{ ec2_security_group }}"

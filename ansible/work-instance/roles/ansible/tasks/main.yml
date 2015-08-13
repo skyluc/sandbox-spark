@@ -3,7 +3,7 @@
     repo: "git@github.com:ansible/ansible"
     dest: "{{ ansible_env.HOME }}/dev/ansible/ansible"
     recursive: yes
-    version: f61de1
+    version: e32d8876
 
 - name: install ansible dependencies
   apt:
