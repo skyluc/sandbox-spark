@@ -15,3 +15,4 @@
     - config
     - ansible
     - java
+    - extra_pkg

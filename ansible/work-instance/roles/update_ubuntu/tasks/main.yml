@@ -1,4 +1,4 @@
-- name: update the install packages
+- name: update the installed packages
   apt:
     update_cache: yes
     upgrade: "yes"
