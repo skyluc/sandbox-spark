@@ -1,0 +1,8 @@
+- name: install extra packages
+  apt:
+    name: "{{ item }}"
+    state: present
+  sudo: yes
+  with_items:
+    - libgfortran3
+  
