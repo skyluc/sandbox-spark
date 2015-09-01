@@ -18,4 +18,5 @@
 - name: copy the aws keys
   copy:
     src: "{{ local_home }}/.ssh/aws"
-    dest: "/home/{{ ansible_ssh_user }}/.ssh/aws"
+    dest: "/home/{{ ansible_ssh_user }}/.ssh/"
+    mode: 0600
