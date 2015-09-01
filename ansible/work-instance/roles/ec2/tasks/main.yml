@@ -50,6 +50,20 @@
         from_port: 655
         to_port: 655
         cidr_ip: 0.0.0.0/0
+      # applications
+      - proto: tcp
+        from_port: 8080
+        to_port: 8081
+        cidr_ip: 0.0.0.0/0
+      - proto: tcp
+        from_port: 50000
+        to_port: 50100
+        cidr_ip: 0.0.0.0/0
+      - proto: tcp
+        from_port: 9000
+        to_port: 9000
+        cidr_ip: 0.0.0.0/0
+
 
 - name: launch the spot instance
   ec2:
@@ -60,6 +74,9 @@
     image: "{{ ec2_image }}"
     keypair: "{{ EC2_KEYPAIR_NAME }}" 
     group: "{{ ec2_security_group }}"
+    volumes:
+    - device_name: /dev/sda
+      volume_size: 30
     wait: yes
     count: 1
     spot_price: "{{ ec2_spot_price }}"
