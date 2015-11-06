@@ -35,6 +35,11 @@
         from_port: 0
         to_port: 65335
         cidr_ip: 10.1.0.0/16
+      # open between machines in the VPC
+      - proto: tcp
+        from_port: 0
+        to_port: 65335
+        cidr_ip: 10.10.0.0/16
       # ssh from anywhere
       # this could be removed when the tinc network is established
       - proto: tcp
