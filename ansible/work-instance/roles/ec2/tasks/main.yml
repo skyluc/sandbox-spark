@@ -80,7 +80,7 @@
     keypair: "{{ EC2_KEYPAIR_NAME }}" 
     group: "{{ ec2_security_group }}"
     volumes:
-    - device_name: /dev/sda
+    - device_name: /dev/sda1
       volume_size: 30
     wait: yes
     count: 1
